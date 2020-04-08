@@ -1,8 +1,10 @@
 import React , {useState} from 'react';
-import { StyleSheet, Text, View, TextInput , Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput , Button, FlatList } from 'react-native';
+import GoalItem from './components/GoalItems';
 
 export default function App() {
   
+  const [id , incrementId] = useState(1) ;
   const [inputTask , addTask] = useState("") ;
   const [taskList, addToList] = useState([]) ;
   
@@ -11,8 +13,9 @@ export default function App() {
   };
 
   const printTask = () => {
-    addToList(oldArray => [...oldArray,inputTask]) ;
+    addToList(oldArray => [...oldArray, {key:id.toString() , value:inputTask}]) ;
     addTask("") ;
+    incrementId(id+1)
     console.log(taskList) ;
   };
   
@@ -26,9 +29,9 @@ export default function App() {
           <Button title="ADD" onPress={printTask}></Button>
         </View>
       </View>
-      <View style={styles.outputContainer} >
-        { taskList.map((goals) => { return (<View style={styles.outputTask}><Text key={goals}>{goals}</Text></View>)}) }
-      </View>
+        <FlatList data={taskList} renderItem={
+          listItems => <GoalItem task={listItems.item.value}/>
+        }/>
     </View>
   ) ;
 }
@@ -54,21 +57,5 @@ const styles = StyleSheet.create({
   addButton:{
     flex:1,
   },
-
-  outputContainer:{ 
-    alignItems:"center"
-  },
-
-  outputTask:{
-    width:"80%" ,
-
-    backgroundColor:"grey" ,
-    borderWidth:1,
-    borderColor:"black",
-    marginBottom:10,
-    padding:10,
-    
-    
-  }
   
 });
