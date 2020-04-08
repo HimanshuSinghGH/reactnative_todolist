@@ -1,37 +1,31 @@
 import React , {useState} from 'react';
 import { StyleSheet, Text, View, TextInput , Button, FlatList } from 'react-native';
 import GoalItem from './components/GoalItems';
+import GoalInput from './components/GoalInput';
 
 export default function App() {
   
-  const [id , incrementId] = useState(1) ;
-  const [inputTask , addTask] = useState("") ;
   const [taskList, addToList] = useState([]) ;
-  
-  const getinput = (input) => {
-    addTask(input) ;
-  };
+  const [id , incrementId] = useState(1) ;
 
-  const printTask = () => {
-    addToList(oldArray => [...oldArray, {key:id.toString() , value:inputTask}]) ;
-    addTask("") ;
+  const appendTask = goalTitle => {
+    addToList(oldArray => [...oldArray, {key:id.toString() , value:goalTitle}]) ;
     incrementId(id+1)
     console.log(taskList) ;
   };
+
+  const removeTask = goalId => {
+    addToList( currentGoals => {
+      return taskList.filter( (goals) => goals.key !== goalId )
+    }) ;
+   }
   
   return (
     <View style={styles.Container}>
-      <View style={styles.inputContainer}>
-        <View style={styles.textBox}>
-          <TextInput placeholder="Enter Task" onChangeText={getinput} value={inputTask}></TextInput>
-        </View>
-        <View style={styles.addButton}>
-          <Button title="ADD" onPress={printTask}></Button>
-        </View>
-      </View>
-        <FlatList data={taskList} renderItem={
-          listItems => <GoalItem task={listItems.item.value}/>
-        }/>
+      <GoalInput onPressAdd={appendTask}/>
+      <FlatList data={taskList} renderItem={
+        listItems => <GoalItem id={listItems.item.key} task={listItems.item.value} onDelete={removeTask}/>
+      }/>
     </View>
   ) ;
 }
@@ -40,22 +34,6 @@ const styles = StyleSheet.create({
   Container :{
     marginTop:30 ,
 
-  },
-  
-  inputContainer:{
-    flexDirection:"row" ,
-    padding:30,
-    paddingBottom:20
-
-  },
-
-  textBox :{
-    flex:4 ,
-    marginRight:5,
-  },
-
-  addButton:{
-    flex:1,
   },
   
 });
