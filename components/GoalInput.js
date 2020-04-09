@@ -27,8 +27,12 @@ const GoalInput = props =>{
           <TextInput placeholder="Enter Task" onChangeText={getinput} value={inputTask} style={styles.textBox}></TextInput>
         </View>
         <View style={styles.addButton}>
+          <View style={styles.button}>
           <Button title="ADD" onPress={appendTask}/>
+          </View>
+          <View style={styles.button}>
           <Button title="CANCEL" onPress={cancelAdd} color="red"/>
+          </View>
         </View>
     </View>
     </Modal>
@@ -58,6 +62,10 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         justifyContent:"space-between"
       },
+
+      button:{
+        flex:1,
+      }
 })
 
 export default GoalInput ;
