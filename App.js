@@ -7,6 +7,7 @@ export default function App() {
   
   const [taskList, addToList] = useState([]) ;
   const [id , incrementId] = useState(1) ;
+  const [isAddState , setisAddState] = useState(false) ;
 
   const appendTask = goalTitle => {
     addToList(oldArray => [...oldArray, {key:id.toString() , value:goalTitle}]) ;
@@ -22,7 +23,10 @@ export default function App() {
   
   return (
     <View style={styles.Container}>
-      <GoalInput onPressAdd={appendTask}/>
+      <View style={styles.addTaskButton}>
+        <Button title="Add New Task" onPress={() => setisAddState(true)}></Button>
+      </View>
+      <GoalInput onPressAdd={appendTask} state={isAddState} statefunc={setisAddState}/>
       <FlatList data={taskList} renderItem={
         listItems => <GoalItem id={listItems.item.key} task={listItems.item.value} onDelete={removeTask}/>
       }/>
@@ -36,4 +40,8 @@ const styles = StyleSheet.create({
 
   },
   
+  addTaskButton :{
+    marginHorizontal:30,
+    marginBottom : 10 , 
+  }
 });
